@@ -1,6 +1,8 @@
 <!-- markdownlint-disable MD046 -->
 # AI File Sorter
 
+> **Daemon Codex Edition** - This fork adds a plan-first, reversible approach with a clean provider abstraction. See [docs/daemon_codex.md](docs/daemon_codex.md) for details.
+
 [![Version](https://img.shields.io/github/v/release/IraBond/daemon-codex)](#)
 [![SourceForge Downloads](https://img.shields.io/sourceforge/dt/ai-file-sorter.svg?label=SourceForge%20downloads)](https://sourceforge.net/projects/ai-file-sorter/files/latest/download)
 [![SourceForge Downloads](https://img.shields.io/sourceforge/dw/ai-file-sorter.svg?label=SourceForge%20downloads)](https://sourceforge.net/projects/ai-file-sorter/files/latest/download)
@@ -414,6 +416,15 @@ Follow the steps in [How to Use](#how-to-use), but modify **step 2** as follows:
 - Fork the repository and submit pull requests.
 - Report issues or suggest features on the GitHub issue tracker.
 - Follow the existing code style and documentation format.
+
+### Daemon Codex Development Notes
+
+**Replit Environment**: Due to toolchain constraints, the full Qt6/OpenGL desktop GUI cannot be built on Replit. If developing on Replit, focus on:
+- Code review and architecture changes
+- Unit tests (headless checks)
+- Documentation updates
+
+**Local Development (Recommended)**: For full build and testing, develop on local macOS or Linux with Qt6 installed. See [docs/daemon_codex.md](docs/daemon_codex.md) for complete build instructions.
 
 ---
 

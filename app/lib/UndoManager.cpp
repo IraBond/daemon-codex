@@ -20,6 +20,16 @@ bool UndoManager::save_plan(const std::string& run_base_dir,
                             const std::vector<Entry>& entries,
                             const std::shared_ptr<spdlog::logger>& logger) const
 {
+    // Call the extended version with empty metadata for backward compatibility
+    ProviderMetadata empty_metadata;
+    return save_plan(run_base_dir, entries, empty_metadata, logger);
+}
+
+bool UndoManager::save_plan(const std::string& run_base_dir,
+                            const std::vector<Entry>& entries,
+                            const ProviderMetadata& metadata,
+                            const std::shared_ptr<spdlog::logger>& logger) const
+{
     if (undo_dir_.empty() || entries.empty()) {
         return false;
     }
@@ -44,6 +54,17 @@ bool UndoManager::save_plan(const std::string& run_base_dir,
     root["base_dir"] = QString::fromStdString(run_base_dir);
     root["created_at_utc"] = QDateTime::currentDateTimeUtc().toString(Qt::ISODateWithMs);
     root["entries"] = arr;
+    
+    // Add provider metadata (Daemon Codex extension)
+    if (!metadata.provider_id.empty()) {
+        QJsonObject provider_obj;
+        provider_obj["provider_id"] = QString::fromStdString(metadata.provider_id);
+        provider_obj["model"] = QString::fromStdString(metadata.model);
+        provider_obj["prompt_version"] = QString::fromStdString(metadata.prompt_version);
+        provider_obj["privacy_level"] = QString::fromStdString(metadata.privacy_level);
+        provider_obj["used_remote_inference"] = metadata.used_remote_inference;
+        root["provider"] = provider_obj;
+    }
 
     const QString filename = QStringLiteral("undo_plan_%1.json")
         .arg(QDateTime::currentDateTimeUtc().toString("yyyyMMdd_hhmmsszzz"));

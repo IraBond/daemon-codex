@@ -19,11 +19,33 @@ public:
         std::uintmax_t size_bytes{0};
         std::time_t mtime{0};
     };
+    
+    /**
+     * Provider metadata for undo plans (Daemon Codex extension)
+     */
+    struct ProviderMetadata {
+        std::string provider_id;         // e.g., "local", "openai", "ollama-cloud"
+        std::string model;               // Model used for categorization
+        std::string prompt_version;      // Version of prompt template
+        std::string privacy_level;       // Privacy level used
+        bool used_remote_inference{false};
+    };
 
     explicit UndoManager(std::string undo_dir);
 
+    /**
+     * Save undo plan (original signature for backward compatibility)
+     */
     bool save_plan(const std::string& run_base_dir,
                    const std::vector<Entry>& entries,
+                   const std::shared_ptr<spdlog::logger>& logger) const;
+    
+    /**
+     * Save undo plan with provider metadata (Daemon Codex extension)
+     */
+    bool save_plan(const std::string& run_base_dir,
+                   const std::vector<Entry>& entries,
+                   const ProviderMetadata& metadata,
                    const std::shared_ptr<spdlog::logger>& logger) const;
 
     std::optional<QString> latest_plan_path() const;
