@@ -84,8 +84,11 @@ std::vector<ModelInfo> OllamaCloudProvider::list_models() const
         return models;
     }
     
-    // TODO(PR#1): Implement model listing after reviewing Ollama Cloud API docs
-    // For now, return empty list - user specifies model in config
+    // SCAFFOLDING(PR#1): Model listing is intentionally incomplete.
+    // After reviewing Ollama Cloud API docs, implement:
+    // - GET /api/tags endpoint to fetch available models
+    // - Parse response and populate ModelInfo structs
+    // For now, return only the configured model so the provider remains functional.
     
     if (!config_.model.empty()) {
         ModelInfo info;
@@ -192,8 +195,12 @@ OllamaCloudProvider::HttpResponse OllamaCloudProvider::make_request(
 
 std::string OllamaCloudProvider::build_chat_payload(const LlmRequest& request) const
 {
-    // TODO(PR#1): Finalize payload format after reviewing Ollama Cloud API docs
-    // Current format is based on Ollama's standard API
+    // SCAFFOLDING(PR#1): Payload format is provisional.
+    // Current implementation follows Ollama's local API format which may differ from
+    // Ollama Cloud. After reviewing Ollama Cloud API docs, verify:
+    // - Endpoint: /api/chat vs /v1/chat/completions
+    // - Message format: {"role": "...", "content": "..."} structure
+    // - Options/parameters naming: num_predict vs max_tokens, etc.
     
     std::ostringstream payload;
     payload << "{";
@@ -264,8 +271,11 @@ LlmResponse OllamaCloudProvider::parse_chat_response(
         return response;
     }
     
-    // TODO(PR#1): Finalize response parsing after reviewing Ollama Cloud API docs
-    // Current format is based on Ollama's standard API
+    // SCAFFOLDING(PR#1): Response parsing assumes Ollama's local API format.
+    // After reviewing Ollama Cloud API docs, validate response structure:
+    // - Chat response: {"message": {"content": "..."}} vs {"choices": [...]}
+    // - Error format: {"error": "..."} vs {"error": {"message": "..."}}
+    // - Token usage fields: prompt_eval_count vs prompt_tokens
     
     if (root.isMember("message") && root["message"].isMember("content")) {
         response.text = root["message"]["content"].asString();
