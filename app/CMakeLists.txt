@@ -14,6 +14,21 @@ if(WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
 
+# Find OpenGL first to help Qt6 find it
+set(OpenGL_GL_PREFERENCE GLVND)
+find_package(OpenGL QUIET)
+if(NOT OPENGL_FOUND)
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(GL REQUIRED gl)
+    set(OPENGL_INCLUDE_DIR "${GL_INCLUDE_DIRS}")
+    set(OPENGL_gl_LIBRARY "${GL_LINK_LIBRARIES}")
+    set(OPENGL_FOUND TRUE)
+    add_library(OpenGL::GL INTERFACE IMPORTED)
+    target_include_directories(OpenGL::GL INTERFACE ${GL_INCLUDE_DIRS})
+    target_link_directories(OpenGL::GL INTERFACE ${GL_LIBRARY_DIRS})
+    target_link_libraries(OpenGL::GL INTERFACE ${GL_LINK_LIBRARIES})
+endif()
+
 # Qt6
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 
@@ -36,8 +51,28 @@ else()
         add_library(JsonCpp::JsonCpp INTERFACE IMPORTED)
     endif()
 endif()
-find_package(fmt REQUIRED CONFIG)
-find_package(spdlog REQUIRED CONFIG)
+# fmt - try CONFIG mode first, then fall back to pkg-config
+find_package(fmt CONFIG QUIET)
+if(NOT fmt_FOUND)
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(FMT REQUIRED fmt)
+    add_library(fmt::fmt INTERFACE IMPORTED)
+    target_include_directories(fmt::fmt INTERFACE ${FMT_INCLUDE_DIRS})
+    target_link_directories(fmt::fmt INTERFACE ${FMT_LIBRARY_DIRS})
+    target_link_libraries(fmt::fmt INTERFACE ${FMT_LINK_LIBRARIES})
+endif()
+
+# spdlog - try CONFIG mode first, then fall back to pkg-config
+find_package(spdlog CONFIG QUIET)
+if(NOT spdlog_FOUND)
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(SPDLOG REQUIRED spdlog)
+    add_library(spdlog::spdlog INTERFACE IMPORTED)
+    target_include_directories(spdlog::spdlog INTERFACE ${SPDLOG_INCLUDE_DIRS})
+    target_link_directories(spdlog::spdlog INTERFACE ${SPDLOG_LIBRARY_DIRS})
+    target_link_libraries(spdlog::spdlog INTERFACE ${SPDLOG_LINK_LIBRARIES})
+endif()
+
 find_package(Intl REQUIRED) # libintl/gettext
 
 # Sources
@@ -411,4 +446,25 @@ if(AI_FILE_SORTER_BUILD_TESTS)
             PASS_REGULAR_EXPRESSION "All tests completed successfully."
         )
     endif()
+endif()
+
+# Provider smoke test CLI (headless tool for testing Ollama providers)
+option(AI_FILE_SORTER_BUILD_TOOLS "Build CLI tools (provider_smoke)" OFF)
+if(AI_FILE_SORTER_BUILD_TOOLS)
+    add_executable(provider_smoke
+        "${CMAKE_CURRENT_SOURCE_DIR}/tools/provider_smoke.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/lib/LocalOllamaProvider.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/lib/OllamaCloudProvider.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/lib/Logger.cpp"
+    )
+    target_include_directories(provider_smoke PRIVATE
+        "${CMAKE_CURRENT_SOURCE_DIR}/include"
+    )
+    target_link_libraries(provider_smoke PRIVATE
+        CURL::libcurl
+        JsonCpp::JsonCpp
+        spdlog::spdlog
+        fmt::fmt
+    )
+    target_compile_definitions(provider_smoke PRIVATE WIN32_LEAN_AND_MEAN NOMINMAX)
 endif()
