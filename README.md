@@ -1,10 +1,10 @@
 <!-- markdownlint-disable MD046 -->
 # AI File Sorter
 
-[![Version](https://img.shields.io/github/v/release/hyperfield/ai-file-sorter)](#)
+[![Version](https://img.shields.io/github/v/release/IraBond/daemon-codex)](#)
 [![SourceForge Downloads](https://img.shields.io/sourceforge/dt/ai-file-sorter.svg?label=SourceForge%20downloads)](https://sourceforge.net/projects/ai-file-sorter/files/latest/download)
 [![SourceForge Downloads](https://img.shields.io/sourceforge/dw/ai-file-sorter.svg?label=SourceForge%20downloads)](https://sourceforge.net/projects/ai-file-sorter/files/latest/download)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/2c646c836a9844be964fbf681649c3cd)](https://app.codacy.com/gh/hyperfield/ai-file-sorter/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/2c646c836a9844be964fbf681649c3cd)](https://app.codacy.com/gh/IraBond/daemon-codex/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Donate](https://img.shields.io/badge/Support%20AI%20File%20Sorter-orange)](https://filesorter.app/donate)
 
 <p align="center">
@@ -177,8 +177,8 @@ File categorization with local LLMs is completely free of charge. If you prefer 
      Optional GPU acceleration also requires either the distro Vulkan 1.2+ driver/runtime (Mesa, AMD, Intel, NVIDIA) or CUDA packages for NVIDIA cards. Install whichever stack you plan to use; the app will fall back to CPU automatically if none are detected.
 2. **Clone the repository**
    ```bash
-   git clone https://github.com/hyperfield/ai-file-sorter.git
-   cd ai-file-sorter
+   git clone https://github.com/IraBond/daemon-codex.git
+   cd daemon-codex
    git submodule update --init --recursive --remote
    ```
    > **Submodule tip:** If you previously downloaded `llama.cpp` or Catch2 manually, remove or rename `app/include/external/llama.cpp` and `external/Catch2` before running the `git submodule` command. Git needs those directories to be empty so it can populate them with the tracked submodules.
@@ -252,8 +252,8 @@ Option A - CMake + vcpkg (recommended)
    - **MSYS2 MinGW64 + OpenBLAS**: install MSYS2 from <https://www.msys2.org>, open an *MSYS2 MINGW64* shell, and run `pacman -S --needed mingw-w64-x86_64-openblas`. The `build_llama_windows.ps1` script uses this OpenBLAS copy for CPU-only builds (the vcpkg variant is not suitable), defaulting to `C:\msys64\mingw64` unless you pass `openblasroot=<path>` or set `OPENBLAS_ROOT`.
 2. Clone repo and submodules:
    ```powershell
-   git clone https://github.com/hyperfield/ai-file-sorter.git
-   cd ai-file-sorter
+   git clone https://github.com/IraBond/daemon-codex.git
+   cd daemon-codex
    git submodule update --init --recursive
    ```
 3. Determine your vcpkg root. It is the folder that contains `vcpkg.exe` (for example `C:\dev\vcpkg`).
