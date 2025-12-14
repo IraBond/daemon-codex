@@ -124,3 +124,4 @@ dist/
 
 #Ignore vscode AI rules
 .github/instructions/codacy.instructions.md
+_codeql_detected_source_root
