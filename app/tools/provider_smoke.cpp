@@ -18,6 +18,7 @@
 #include "LocalOllamaProvider.hpp"
 #include "OllamaCloudProvider.hpp"
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <cstring>
 #include <memory>
