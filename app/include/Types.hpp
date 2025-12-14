@@ -8,7 +8,8 @@ enum class LLMChoice {
     Remote,
     Local_3b,
     Local_7b,
-    Custom
+    Custom,
+    OllamaCloud
 };
 
 enum class FileType {File, Directory};
