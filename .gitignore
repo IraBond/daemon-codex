@@ -101,7 +101,8 @@ app/include/llama/*.h
 
 # R & D stage
 /assets/
-/docs/
+/docs/*
+!/docs/daemon_codex.md
 /scripts/
 !app/scripts/
 /tools/
