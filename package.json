@@ -1,0 +1,12 @@
+{
+  "name": "daemon-codex",
+  "version": "1.4.0",
+  "description": "AI File Sorter - A powerful, cross-platform desktop application that automates file organization with the help of AI",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IraBond/daemon-codex.git"
+  },
+  "author": "IraBond",
+  "license": "AGPL-3.0-only"
+}
